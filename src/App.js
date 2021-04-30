@@ -108,14 +108,16 @@ function App() {
     let amountOut = new web3.current.utils.BN(amountOutRaw[1])    
     let amountOutMin = await amountOut.mul(web3.current.utils.toBN(95)).div(web3.current.utils.toBN(100))
     console.log(amountOutMin.toString())
-    routerInstance.current.methods.swapExactTokensForTokens(
+    const amountReceived = await routerInstance.current.methods.swapExactTokensForTokens(
       amountIn,
       amountOutMin,
       [wethInstance.current._address, daiInstance.current._address],
       accounts.current[0],
-      Math.floor((Date.now()/1000)) + 60*50
+      Math.floor((Date.now()/1000)) + 60*30
     ).send({from:accounts.current[0]})
+    console.log(amountReceived)
   }
+
   async function handleDeposit() {
     await wethInstance.current.methods.deposit().send({from: accounts.current[0], value: web3.current.utils.toWei("0.1")})
   }
